@@ -62,13 +62,10 @@ class User extends Thread{
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             writer = new PrintWriter(out, true);
-            System.out.println("hello");
 
             String nameInput = reader.readLine();
-            System.out.println("hello2");
             System.out.println(name + " has connected.");
             this.name = nameInput;
-            System.out.println("hello3");
 
             String createOrJoin = reader.readLine();
             if(createOrJoin.equals("join")){
