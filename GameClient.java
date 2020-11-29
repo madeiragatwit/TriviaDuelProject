@@ -31,7 +31,7 @@ public class GameClient {
     }
 }
 
-//Class to handle reading messages from server
+//Class to handle reading messages from server.
 class Read extends Thread{
     private Socket socket;
     private GameClient client;
@@ -60,7 +60,7 @@ class Read extends Thread{
     }
 }
 
-//Class to handle sending messages to server
+//Class to handle sending messages to server.
 class Write extends Thread{
     private Socket socket;
     private GameClient client;
