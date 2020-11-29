@@ -85,7 +85,7 @@ class User extends Thread{
                         }else {
                         	writer.println("Room does not exist with code " + joinCode + ". Enter another code: ");
                         }
-
+                        //If code contains non-numeric characters
                     }catch(NumberFormatException e){
                         writer.println("Invalid room code. Enter another code: ");
                     }
@@ -94,6 +94,7 @@ class User extends Thread{
                 }
             	}
             }else if(createOrJoin.equals("create")){
+            	//Creates room with random code & assigns player to room
                 int code = GameServer.createGame(this, GameServer.games);
                 System.out.println("Game created with code " + code + ".");
                 writer.println(new String("Game created with code " + code + "!"));

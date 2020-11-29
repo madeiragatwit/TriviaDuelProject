@@ -79,10 +79,12 @@ class Write extends Thread{
         Scanner n = new Scanner(System.in);
         boolean isCreating = false;
 
+        //Player name
         System.out.print("Enter your name: ");
         String name = n.nextLine();
         write.println(name);
 
+        //String to determine if player is creating or joining a room (will change to methods for UI buttons in the future)
         System.out.println("Create or join room?: ");
         String answer = n.nextLine();
         if(answer.equals("create")){
