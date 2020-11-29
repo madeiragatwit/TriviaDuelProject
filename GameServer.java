@@ -45,7 +45,7 @@ public class GameServer {
     }
 }
 
-//User class to interact with each player connection
+//User class to interact with each individual player connection
 class User extends Thread{
     private Socket socket;
     private GameServer server;
