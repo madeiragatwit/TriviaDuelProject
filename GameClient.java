@@ -3,21 +3,42 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class GameClient {
+	
+	String host;
+	int port;
+	
+	public GameClient(String host, int port) {
+		this.host = host;
+		this.port = port;
+	}
+	
     public static void main(String[] args) throws IOException {
-        Socket connectionSocket = new Socket("localhost", 1234);
+        GameClient client = new GameClient("localhost", 1234);
+        client.run();
 
-        new Read(connectionSocket).start();
-        new Write(connectionSocket).start();
-
+    }
+    
+    public void run() {
+    	try {
+    		Socket s = new Socket(host, port);
+    		System.out.println("Connected.");
+    		
+    		new Read(s, this).start();
+    		new Write(s, this).start();
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    	}
     }
 }
 
 class Read extends Thread{
     private Socket socket;
+    private GameClient client;
     private BufferedReader reader;
 
-    public Read(Socket s){
+    public Read(Socket s, GameClient c){
         this.socket = s;
+        this.client = c;
         try{
             InputStream in = s.getInputStream();
             reader = new BufferedReader(new InputStreamReader(in));
@@ -40,14 +61,15 @@ class Read extends Thread{
 
 class Write extends Thread{
     private Socket socket;
+    private GameClient client;
     private PrintWriter write;
-    private DataOutputStream out;
 
-    public Write(Socket s){
+    public Write(Socket s, GameClient c){
         this.socket = s;
+        this.client = c;
         try{
-            out = new DataOutputStream(socket.getOutputStream());
-            write = new PrintWriter(new OutputStreamWriter(out));
+            OutputStream out = s.getOutputStream();
+            write = new PrintWriter(out, true);
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -59,41 +81,25 @@ class Write extends Thread{
 
         System.out.print("Enter your name: ");
         String name = n.nextLine();
-        try {
-            out.writeBytes(name);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        write.println(name);
 
         System.out.println("Create or join room?: ");
         String answer = n.nextLine();
         if(answer.equals("create")){
             isCreating = true;
         }
-        try {
-            out.writeBytes(answer);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        write.println(answer);
+        
         if(!isCreating) {
             System.out.print("Enter a room code: ");
             String code = n.nextLine();
-            try {
-                out.writeBytes(code);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            write.println(code);
         }
 
         String input = "";
         while(true){
             input = n.nextLine();
-            try {
-                out.writeBytes(input);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            write.println(input);
         }
     }
 }

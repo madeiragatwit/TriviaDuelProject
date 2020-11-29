@@ -9,7 +9,7 @@ import java.util.Random;
 public class GameServer {
 
     //HashMap of games to keep track of which game instances have certain room codes
-    public static HashMap<GameInstance, Integer> games = new HashMap<>();
+    public static HashMap<Integer, GameInstance> games = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = new ServerSocket(1234);
@@ -28,7 +28,7 @@ public class GameServer {
         }
     }
 
-    public static int createGame(User player, HashMap games){
+    public static int createGame(User player, HashMap<Integer, GameInstance> games){
         //Generate a random room code to assign to new game
         Random r = new Random();
         int code = r.nextInt(8999) + 1000;
@@ -40,7 +40,7 @@ public class GameServer {
 
         //Create the new game & put it in the HashMap
         GameInstance game = new GameInstance(player, code);
-        games.put(game, code);
+        games.put(code, game);
         return code;
     }
 }
@@ -49,8 +49,8 @@ public class GameServer {
 class User extends Thread{
     private Socket socket;
     private GameServer server;
-    private PrintWriter writer;
-    private String name;
+    public PrintWriter writer;
+    public String name;
 
     public User(Socket s){
         this.socket = s;
@@ -59,29 +59,44 @@ class User extends Thread{
     public void run(){
         try{
             InputStream in = socket.getInputStream();
-            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+            OutputStream out = socket.getOutputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             writer = new PrintWriter(out, true);
 
             String nameInput = reader.readLine();
-            System.out.println(name + " has connected.");
+            System.out.println(nameInput + " has connected.");
             this.name = nameInput;
 
             String createOrJoin = reader.readLine();
             if(createOrJoin.equals("join")){
-                String input = reader.readLine();
-                if(input.length() == 4){
+            	boolean allSetJoin = false;
+            	while(!allSetJoin) {
+                String joinCode = reader.readLine();
+                if(joinCode.length() == 4){
                     try{
-                        int code = Integer.parseInt(input);
+                    	//If game exists
+                        if(GameServer.games.containsKey(Integer.parseInt(joinCode))) {
+                        	//If game has enough room
+                        	if(GameServer.games.get(Integer.parseInt(joinCode)).addPlayer(this)) {
+                        		allSetJoin = true;
+                        	}else {
+                        		writer.println("Game is full. Enter another code: ");
+                        	}
+                        }else {
+                        	writer.println("Room does not exist with code " + joinCode + ". Enter another code: ");
+                        }
 
                     }catch(NumberFormatException e){
-                        out.writeBytes(new String("Invalid room code."));
+                        writer.println("Invalid room code. Enter another code: ");
                     }
+                }else {
+                	writer.println("Invalid room code. Enter another code: ");
                 }
+            	}
             }else if(createOrJoin.equals("create")){
                 int code = GameServer.createGame(this, GameServer.games);
-                System.out.println("Game created with code " + code);
-                out.writeBytes(new String("Game created with code " + code));
+                System.out.println("Game created with code " + code + ".");
+                writer.println(new String("Game created with code " + code + "!"));
             }
 
         }catch(Exception e){
@@ -101,7 +116,18 @@ class GameInstance extends Thread{
         this.gameCode = gameCode;
     }
 
-    public void addPlayer(User player){
-
+    public boolean addPlayer(User player){
+    	if(players.size() == 2) {
+    		return false;
+    	}else {
+    		players.add(player);
+    		player.writer.println("Game " + gameCode + " joined! Other player: " + players.get(0).name);
+    		players.get(0).writer.println("Player " + player.name + " has joined!");
+    		return true;
+    	}
+    }
+    
+    public int getCurrPlayers() {
+    	return players.size();
     }
 }
