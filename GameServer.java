@@ -45,18 +45,19 @@ public class GameServer {
     }
 }
 
-//User class to interact with each individual player connection.
+/*
+ * User class to interact with each individual player connection.
+ */
 class User extends Thread{
     private Socket socket;
-    private GameServer server;
     public PrintWriter writer;
     public String name;
 
-    public User(Socket s){
+    public User(Socket s) {
         this.socket = s;
     }
 
-    public void run(){
+    public void run() {
         try{
             InputStream in = socket.getInputStream();
             OutputStream out = socket.getOutputStream();
@@ -106,7 +107,10 @@ class User extends Thread{
     }
 }
 
-//Class to run separate instances of games
+/*
+ * A multi-threaded class to run separate instances of games
+ * (Each GameInstance is stored in a HashMap in the server with a key (the room code)
+ */
 class GameInstance extends Thread{
     private int gameCode;
     private ArrayList<User> players;
@@ -117,15 +121,46 @@ class GameInstance extends Thread{
         this.gameCode = gameCode;
     }
 
-    public boolean addPlayer(User player){
-    	if(players.size() == 2) {
+    /*
+     * Adds new player to existing ArrayList of Users
+     */
+    public boolean addPlayer(User player) {
+    	if(players.size() == 10) {
+    		//Returns false if room is already full
     		return false;
     	}else {
+    		//Room is not full; proceed with adding new player
     		players.add(player);
-    		player.writer.println("Game " + gameCode + " joined! Other player: " + players.get(0).name);
-    		players.get(0).writer.println("Player " + player.name + " has joined!");
+    		player.writer.println("Game " + gameCode + " joined! Other player(s): " + sendCurrentPlayers(player));
+    		sendJoinMessage(player);
     		return true;
     	}
+    }
+    
+    /*
+     * Sends all current players a message notifying them of a new User joining
+     */
+    void sendJoinMessage(User player) {
+    	for(int i = 0; i < players.size(); i++) {
+    		if(players.get(i) != player) {
+    			players.get(i).writer.println("Player " + player.name + " has joined!");
+    		}
+    	}
+    }
+    
+    /*
+     * Sends the new User a list of all current players separated by commas
+     */
+    String sendCurrentPlayers(User player) {
+    	String output = "";
+    	for(int i = 0; i < players.size()-1; i++) {
+    		if(players.get(i) != player) {
+    			output += players.get(i).name + ", ";
+    		}
+    	}
+    	
+    	//Sends back String without comma at the end
+    	return output.substring(0, output.length()-2);
     }
     
     public int getCurrPlayers() {
