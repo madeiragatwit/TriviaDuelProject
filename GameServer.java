@@ -21,6 +21,7 @@ public class GameServer {
 
         while(true){
             Socket connection = serverSocket.accept();
+            System.out.println(connection + " connected.");
 
             User player = new User(connection);
             players.add(player);
@@ -51,7 +52,7 @@ public class GameServer {
 class User extends Thread{
     private Socket socket;
     public PrintWriter writer;
-    public String name;
+    public String name = "";
 
     public User(Socket s) {
         this.socket = s;
@@ -64,9 +65,7 @@ class User extends Thread{
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             writer = new PrintWriter(out, true);
 
-            String nameInput = reader.readLine();
-            System.out.println(nameInput + " has connected.");
-            this.name = nameInput;
+            name = reader.readLine();
 
             String createOrJoin = reader.readLine();
             if(createOrJoin.equals("join")){
@@ -102,7 +101,11 @@ class User extends Thread{
             }
 
         }catch(Exception e){
-            e.printStackTrace();
+            if(!name.equals("")) {
+            	System.out.println(socket + " (" + name + ") disconnected.");
+            }else {
+            	System.out.println(socket + " disconnected.");
+            }
         }
     }
 }
@@ -163,7 +166,25 @@ class GameInstance extends Thread{
     	return output.substring(0, output.length()-2);
     }
     
+    /*
+     * Sends all players a given String message
+     */
+    public void broadcastMessage(String message) {
+    	for(int i = 0; i < players.size(); i++) {
+    		players.get(i).writer.println(message);
+    	}
+    }
+    
     public int getCurrPlayers() {
     	return players.size();
+    }
+    
+    public void run() {
+    	broadcastMessage("Welcome to the game!");
+    	/*
+    	 * TO-DO:
+    	 * Lobby & Game code
+    	 * 
+    	 */
     }
 }

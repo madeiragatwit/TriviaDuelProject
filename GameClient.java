@@ -54,7 +54,8 @@ class Read extends Thread{
                 String response = reader.readLine();
                 System.out.println(response);
             }catch(Exception e){
-                e.printStackTrace();
+                System.out.println("Disconnected from server.");
+                System.exit(0);
             }
         }
     }
@@ -73,7 +74,7 @@ class Write extends Thread{
             OutputStream out = s.getOutputStream();
             write = new PrintWriter(out, true);
         }catch(Exception e){
-            e.printStackTrace();
+            System.exit(0);
         }
     }
 
