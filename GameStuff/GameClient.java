@@ -33,7 +33,7 @@ public class GameClient extends Application implements Initializable {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		final FXMLLoader loader = new FXMLLoader(getClass().getResource("TriviaGame.fxml"));
+		final FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
 		final Pane p = loader.load();
 		primaryStage.setScene(new Scene(p));
 		primaryStage.show();
