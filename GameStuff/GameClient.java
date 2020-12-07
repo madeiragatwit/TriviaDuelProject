@@ -50,7 +50,7 @@ public class GameClient extends Application implements Initializable {
 		
 		
 		primaryStage.setScene(welcomeScene);
-		primaryStage.setTitle("Welcome");
+		primaryStage.setTitle("Trivia Duel");
 		primaryStage.show();
 	}
 

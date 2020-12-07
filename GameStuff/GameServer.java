@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class GameServer {
 
@@ -160,17 +161,21 @@ class User extends Thread{
  */
 class GameInstance extends Thread{
     private int gameCode;
-    private ArrayList<User> players;
+    private HashMap<User, Integer> players;
+    private boolean isStarted = false;
+    
+    public User firstPlayer;
 
     public GameInstance(User player, int gameCode){
-        this.players = new ArrayList<>();
-        players.add(player);
+        this.players = new HashMap<User, Integer>();
+        players.put(player, 0);
+        firstPlayer = player;
         broadcastMessage("*players" + sendCurrentPlayers());
         this.gameCode = gameCode;
     }
 
     /*
-     * Adds new player to existing ArrayList of Users
+     * Adds new player to existing HashMap of Users
      */
     public boolean addPlayer(User player) {
     	if(players.size() == 10) {
@@ -178,7 +183,7 @@ class GameInstance extends Thread{
     		return false;
     	}else {
     		//Room is not full; proceed with adding new player
-    		players.add(player);
+    		players.put(player, 0);
     		broadcastMessage("*players" + sendCurrentPlayers());
     		sendJoinMessage(player);
     		return true;
@@ -189,10 +194,13 @@ class GameInstance extends Thread{
      * Sends all current players a message notifying them of a new User joining
      */
     void sendJoinMessage(User player) {
-    	for(int i = 0; i < players.size(); i++) {
-    		if(players.get(i) != player) {
-    			players.get(i).writer.println("Player " + player.name + " has joined!");
+    	Iterator it = players.entrySet().iterator();
+    	while(it.hasNext()) {
+    		Map.Entry<User, Integer> pair = (Map.Entry<User, Integer>)it.next();
+    		if(pair.getKey() != player) {
+    			pair.getKey().writer.println("Player " + player.name + " has joined!");
     		}
+    		
     	}
     }
     
@@ -201,8 +209,11 @@ class GameInstance extends Thread{
      */
     String sendCurrentPlayers() {
     	String output = "";
-    	for(int i = 0; i < players.size(); i++) {
-    		output += players.get(i).name + " ";
+    	Iterator it = players.entrySet().iterator();
+    	while(it.hasNext()) {
+    		Map.Entry<User, Integer> pair = (Map.Entry<User, Integer>)it.next();
+    		output += pair.getKey().name + " ";
+    		
     	}
     	
     	return output;
@@ -212,19 +223,25 @@ class GameInstance extends Thread{
      * Sends all players a given String message
      */
     public void broadcastMessage(String message) {
-    	for(int i = 0; i < players.size(); i++) {
-    		players.get(i).writer.println(message);
+    	Iterator it = players.entrySet().iterator();
+    	while(it.hasNext()) {
+    		Map.Entry<User, Integer> pair = (Map.Entry<User, Integer>)it.next();
+    		pair.getKey().writer.println(message);
+    		
     	}
     }
     
     /*
-     * Checks if given 'User' Thread is present in player ArrayList
+     * Checks if given 'User' Thread is present in player HashMap
      */
     public boolean containsPlayer(User player) {
-    	for(int i = 0; i < players.size(); i++) {
-    		if(players.get(i) == player) {
+    	Iterator it = players.entrySet().iterator();
+    	while(it.hasNext()) {
+    		Map.Entry<User, Integer> pair = (Map.Entry<User, Integer>)it.next();
+    		if(pair.getKey() == player) {
     			return true;
     		}
+    		
     	}
     	return false;
     }
@@ -234,7 +251,7 @@ class GameInstance extends Thread{
      * (meaning that the player is the party leader)
      */
     public boolean isFirstPlayer(User player) {
-    	if(players.get(0) == player) {
+    	if(firstPlayer == player) {
     		return true;
     	}else {
     		return false;
@@ -253,6 +270,7 @@ class GameInstance extends Thread{
      */
     public void startGame() {
     	broadcastMessage("*startgame");
+    	isStarted = true;
     }
     
     /*
@@ -260,7 +278,15 @@ class GameInstance extends Thread{
      */
     public void run() {
     	while(true) {
-    		
+    		if(isStarted) {
+    			try {
+    				TimeUnit.MILLISECONDS.sleep(5);
+    			} catch (InterruptedException e1) {
+    				e1.printStackTrace();
+    			}
+    			
+    			
+    		}
     	}
     }
 }

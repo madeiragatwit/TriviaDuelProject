@@ -75,7 +75,6 @@ public class ClientLobbyRoom extends Application implements Initializable{
 			playerLabels[i].setText("");
 		}
 		
-		//playerLabels = ClientLobbyRoom.playerLabelsS;
 		ClientLobbyRoom.leaderTextS = leaderText;
 		
 		try {
@@ -118,7 +117,7 @@ public class ClientLobbyRoom extends Application implements Initializable{
 	 * Sets room code text to room code
 	 */
 	public static void setRoomCode(String s) {
-		roomCodeS = "Room Code: " + s;
+		roomCodeS = s;
 	}
 	
 	/*

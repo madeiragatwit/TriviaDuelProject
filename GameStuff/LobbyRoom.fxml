@@ -11,7 +11,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ClientLobbyRoom">
    <children>
-      <Pane layoutX="-2.0" layoutY="-1.0" prefHeight="400.0" prefWidth="600.0">
+      <Pane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #cacccc;">
          <children>
             <Label layoutX="41.0" layoutY="25.0" prefHeight="35.0" prefWidth="111.0" text="Players:">
                <font>
@@ -19,8 +19,8 @@
                </font>
             </Label>
             <Label fx:id="player1text" layoutX="41.0" layoutY="60.0" prefHeight="25.0" prefWidth="111.0" text="Player 1" />
-            <Button fx:id="leaveButton" layoutX="36.0" layoutY="330.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="88.0" text="Leave Room" />
-            <Button fx:id="startButton" layoutX="152.0" layoutY="330.0" mnemonicParsing="false" onAction="#buttonStart" prefHeight="35.0" prefWidth="88.0" text="Start Game" />
+            <Button id="blue" fx:id="leaveButton" layoutX="35.0" layoutY="333.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="95.0" stylesheets="@stylesheet.css" text="Leave" />
+            <Button id="blue" fx:id="startButton" layoutX="152.0" layoutY="333.0" mnemonicParsing="false" onAction="#buttonStart" prefHeight="41.0" prefWidth="121.0" stylesheets="@stylesheet.css" text="Start Game" />
             <TextField layoutX="367.0" layoutY="353.0" prefHeight="25.0" prefWidth="200.0" text="Send Message...." />
             <TextArea layoutX="367.0" layoutY="137.0" prefHeight="200.0" prefWidth="200.0" />
             <Label layoutX="367.0" layoutY="94.0" prefHeight="35.0" prefWidth="121.0" text="Chat:">
@@ -37,8 +37,12 @@
             <Label fx:id="player8text" layoutX="41.0" layoutY="235.0" prefHeight="25.0" prefWidth="111.0" text="Player 8" />
             <Label fx:id="player9text" layoutX="41.0" layoutY="260.0" prefHeight="25.0" prefWidth="111.0" text="Player 9" />
             <Label fx:id="player10text" layoutX="41.0" layoutY="285.0" prefHeight="25.0" prefWidth="111.0" text="Player 10" />
-            <Text fx:id="roomCode" layoutX="475.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room Code" />
+            <Text fx:id="roomCode" layoutX="434.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room Code" textAlignment="CENTER" wrappingWidth="132.666015625">
+               <font>
+                  <Font name="System Bold" size="21.0" />
+               </font></Text>
             <Text fx:id="leaderText" layoutX="43.0" layoutY="383.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="306.0" />
+            <Text layoutX="449.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room Code" textAlignment="CENTER" underline="true" wrappingWidth="102.666015625" />
          </children>
       </Pane>
    </children>

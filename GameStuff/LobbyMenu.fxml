@@ -10,22 +10,27 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ClientLobbyMenu">
    <children>
-      <Pane prefHeight="400.0" prefWidth="600.0">
+      <Pane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #cacccc;">
          <children>
-            <Button fx:id="createButton" layoutX="256.0" layoutY="240.0" mnemonicParsing="false" onAction="#createGame" text="Create Room" />
-            <Button fx:id="joinButton" layoutX="264.0" layoutY="136.0" mnemonicParsing="false" onAction="#joinGame" text="Join Room" />
+            <Button id="blue" fx:id="createButton" layoutX="234.0" layoutY="275.0" mnemonicParsing="false" onAction="#createGame" stylesheets="@stylesheet.css" text="Create Room" />
+            <Button id="blue" fx:id="joinButton" layoutX="242.0" layoutY="134.0" mnemonicParsing="false" onAction="#joinGame" stylesheets="@stylesheet.css" text="Join Room" />
             <Text fx:id="nameText" layoutX="243.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player Name" textAlignment="CENTER" wrappingWidth="112.79998779296875">
                <font>
                   <Font size="18.0" />
                </font>
             </Text>
-            <TextField fx:id="roomCode" layoutX="243.0" layoutY="99.0" prefHeight="25.0" prefWidth="113.0" />
-            <Label layoutX="287.0" layoutY="187.0" text="OR">
+            <TextField fx:id="roomCode" layoutX="243.0" layoutY="99.0" prefHeight="25.0" prefWidth="113.0" promptText="Enter room code..." />
+            <Label layoutX="285.0" layoutY="206.0" text="OR">
                <font>
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
             <Text fx:id="errorText" layoutX="119.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="360.13671875" />
+            <Text layoutX="242.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Logged in as" textAlignment="CENTER" wrappingWidth="112.79998779296875">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
    </children>
