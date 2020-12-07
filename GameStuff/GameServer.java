@@ -4,6 +4,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 
 public class GameServer {
@@ -29,6 +31,11 @@ public class GameServer {
         }
     }
 
+    /*
+     * Method to create a new game with:
+     * 	- new GameInstance (the game Thread)
+     * 	- according Integer key (room code)
+     */
     public static int createGame(User player, HashMap<Integer, GameInstance> games){
         //Generate a random room code to assign to new game
         Random r = new Random();
@@ -48,6 +55,7 @@ public class GameServer {
 
 /*
  * User class to interact with each individual player connection.
+ * (Each player connection is assigned to a new Thread)
  */
 class User extends Thread{
     private Socket socket;
@@ -66,24 +74,25 @@ class User extends Thread{
             writer = new PrintWriter(out, true);
 
             name = reader.readLine();
-
+            
+            boolean allSet = false;
+            while(!allSet) {
             String createOrJoin = reader.readLine();
-            if(createOrJoin.equals("join")){
-            	boolean allSetJoin = false;
-            	while(!allSetJoin) {
-                String joinCode = reader.readLine();
+            if(createOrJoin.substring(0,5).equals("*join")){
+                String joinCode = createOrJoin.substring(5, 9);
                 if(joinCode.length() == 4){
                     try{
                     	//If game exists
                         if(GameServer.games.containsKey(Integer.parseInt(joinCode))) {
                         	//If game has enough room
                         	if(GameServer.games.get(Integer.parseInt(joinCode)).addPlayer(this)) {
-                        		allSetJoin = true;
+                        		allSet = true;
+                        		writer.println("*allsetjoin");
                         	}else {
-                        		writer.println("Game is full. Enter another code: ");
+                        		writer.println("*gamefull");
                         	}
                         }else {
-                        	writer.println("Room does not exist with code " + joinCode + ". Enter another code: ");
+                        	writer.println("*noexist");
                         }
                         //If code contains non-numeric characters
                     }catch(NumberFormatException e){
@@ -92,12 +101,32 @@ class User extends Thread{
                 }else {
                 	writer.println("Invalid room code. Enter another code: ");
                 }
-            	}
-            }else if(createOrJoin.equals("create")){
+            }else if(createOrJoin.equals("*create")){
             	//Creates room with random code & assigns player to room
                 int code = GameServer.createGame(this, GameServer.games);
                 System.out.println("Game created with code " + code + ".");
-                writer.println(new String("Game created with code " + code + "!"));
+                writer.println(new String("*code" + code));
+                allSet = true;
+            }
+            }
+            
+            //Code to run once player is in a lobby
+            boolean started = false;
+            while(true) {
+            	String response = reader.readLine();
+            	if(!started) {
+            		//Will run until game is started ('started' is set to 'true')
+            	if(response.equals("*startgame")) {
+            		GameInstance game = getGame();
+            		if(game.isFirstPlayer(this)) {
+            			getGame().startGame();
+            			started = true;
+            		}else {
+            			//Informs player that only party leader can start game
+            			writer.println("*notleader");
+            		}
+            	}
+            	}
             }
 
         }catch(Exception e){
@@ -107,6 +136,21 @@ class User extends Thread{
             	System.out.println(socket + " disconnected.");
             }
         }
+    }
+    
+    /*
+     * Returns specific 'GameInstance' Thread that contains the player's 'User' Thread
+     */
+    public GameInstance getGame() {
+    	Iterator it = GameServer.games.entrySet().iterator();
+    	while(it.hasNext()) {
+    		Map.Entry<Integer, GameInstance> pair = (Map.Entry<Integer, GameInstance>)it.next();
+    		if(pair.getValue().containsPlayer(this)) {
+    			return pair.getValue();
+    		}
+    	}
+    	//Code below should be unreachable, since player has to be in a game for this method to run
+    	return null;
     }
 }
 
@@ -121,6 +165,7 @@ class GameInstance extends Thread{
     public GameInstance(User player, int gameCode){
         this.players = new ArrayList<>();
         players.add(player);
+        broadcastMessage("*players" + sendCurrentPlayers());
         this.gameCode = gameCode;
     }
 
@@ -134,7 +179,7 @@ class GameInstance extends Thread{
     	}else {
     		//Room is not full; proceed with adding new player
     		players.add(player);
-    		player.writer.println("Game " + gameCode + " joined! Other player(s): " + sendCurrentPlayers(player));
+    		broadcastMessage("*players" + sendCurrentPlayers());
     		sendJoinMessage(player);
     		return true;
     	}
@@ -152,18 +197,15 @@ class GameInstance extends Thread{
     }
     
     /*
-     * Sends the new User a list of all current players separated by commas
+     * Sends list of all players including the player itself.
      */
-    String sendCurrentPlayers(User player) {
+    String sendCurrentPlayers() {
     	String output = "";
-    	for(int i = 0; i < players.size()-1; i++) {
-    		if(players.get(i) != player) {
-    			output += players.get(i).name + ", ";
-    		}
+    	for(int i = 0; i < players.size(); i++) {
+    		output += players.get(i).name + " ";
     	}
     	
-    	//Sends back String without comma at the end
-    	return output.substring(0, output.length()-2);
+    	return output;
     }
     
     /*
@@ -175,16 +217,50 @@ class GameInstance extends Thread{
     	}
     }
     
+    /*
+     * Checks if given 'User' Thread is present in player ArrayList
+     */
+    public boolean containsPlayer(User player) {
+    	for(int i = 0; i < players.size(); i++) {
+    		if(players.get(i) == player) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
+    
+    /*
+     * Checks if given 'User' Thread is in the first position of player ArrayList
+     * (meaning that the player is the party leader)
+     */
+    public boolean isFirstPlayer(User player) {
+    	if(players.get(0) == player) {
+    		return true;
+    	}else {
+    		return false;
+    	}
+    }
+    
+    /*
+     * Returns amount of players in lobby
+     */
     public int getCurrPlayers() {
     	return players.size();
     }
     
+    /*
+     * Informs every player to start the game
+     */
+    public void startGame() {
+    	broadcastMessage("*startgame");
+    }
+    
+    /*
+     * Code for actual game once started
+     */
     public void run() {
-    	broadcastMessage("Welcome to the game!");
-    	/*
-    	 * TO-DO:
-    	 * Lobby & Game code
-    	 * 
-    	 */
+    	while(true) {
+    		
+    	}
     }
 }
