@@ -10,49 +10,34 @@
    <children>
       <Pane prefHeight="400.0" prefWidth="600.0">
          <children>
-            <Button layoutX="146.0" layoutY="199.0" mnemonicParsing="false" text="A">
+            <Button fx:id="answer1button" layoutX="146.0" layoutY="199.0" mnemonicParsing="false" onAction="#sendAnswer1" text="A">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button layoutX="146.0" layoutY="239.0" mnemonicParsing="false" text="C">
+            <Button fx:id="answer3button" layoutX="146.0" layoutY="239.0" mnemonicParsing="false" onAction="#sendAnswer3" text="C">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button layoutX="328.0" layoutY="199.0" mnemonicParsing="false" text="B">
+            <Button fx:id="answer2button" layoutX="328.0" layoutY="199.0" mnemonicParsing="false" onAction="#sendAnswer2" text="B">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Button layoutX="327.0" layoutY="239.0" mnemonicParsing="false" text="D">
+            <Button fx:id="answer4button" layoutX="328.0" layoutY="239.0" mnemonicParsing="false" onAction="#sendAnswer4" text="D">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
             </Button>
-            <Label layoutX="188.0" layoutY="204.0" text="Answer 1">
+            <Label fx:id="answer1text" layoutX="188.0" layoutY="194.0" prefHeight="41.0" prefWidth="129.0" wrapText="true">
                <font>
                   <Font size="13.0" />
                </font>
             </Label>
-            <Label layoutX="188.0" layoutY="244.0" text="Answer 3">
+            <Label fx:id="questionText" alignment="CENTER" layoutX="76.0" layoutY="125.0" prefHeight="58.0" prefWidth="449.0" text="Question" wrapText="true">
                <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label layoutX="369.0" layoutY="204.0" text="Answer 2">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label layoutX="369.0" layoutY="244.0" text="Answer 4">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Label>
-            <Label fx:id="questionText" alignment="CENTER" layoutX="82.0" layoutY="132.0" prefHeight="58.0" prefWidth="437.0" text="Question">
-               <font>
-                  <Font name="Calibri" size="16.0" />
+                  <Font name="Calibri" size="22.0" />
                </font>
             </Label>
             <Button layoutX="41.0" layoutY="346.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="64.0" text="Leave" />
@@ -61,19 +46,34 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label layoutX="30.0" layoutY="55.0" prefHeight="19.0" prefWidth="64.0" text="Player 1:" />
-            <Label layoutX="29.0" layoutY="90.0" prefHeight="19.0" prefWidth="64.0" text="Player 6:" />
-            <Label layoutX="120.0" layoutY="55.0" prefHeight="19.0" prefWidth="64.0" text="Player 2:" />
-            <Label layoutX="210.0" layoutY="55.0" prefHeight="19.0" prefWidth="64.0" text="Player 3:" />
-            <Label layoutX="300.0" layoutY="55.0" prefHeight="19.0" prefWidth="64.0" text="Player 4:" />
-            <Label layoutX="390.0" layoutY="55.0" prefHeight="19.0" prefWidth="64.0" text="Player 5:" />
-            <Label layoutX="120.0" layoutY="90.0" prefHeight="19.0" prefWidth="64.0" text="Player 7:" />
-            <Label layoutX="210.0" layoutY="90.0" prefHeight="19.0" prefWidth="64.0" text="Player 8:" />
-            <Label layoutX="300.0" layoutY="90.0" prefHeight="19.0" prefWidth="64.0" text="Player 9:" />
-            <Label layoutX="390.0" layoutY="90.0" prefHeight="19.0" prefWidth="64.0" text="Player 10:" />
-            <Label alignment="CENTER" layoutX="199.0" layoutY="326.0" prefHeight="41.0" prefWidth="202.0" text="Player # Wins!">
+            <Label fx:id="player1points" layoutX="30.0" layoutY="55.0" prefHeight="19.0" prefWidth="64.0" text="Player 1:" />
+            <Label fx:id="player6points" layoutX="29.0" layoutY="90.0" prefHeight="19.0" prefWidth="64.0" text="Player 6:" />
+            <Label fx:id="player2points" layoutX="120.0" layoutY="55.0" prefHeight="19.0" prefWidth="64.0" text="Player 2:" />
+            <Label fx:id="player3points" layoutX="210.0" layoutY="55.0" prefHeight="19.0" prefWidth="64.0" text="Player 3:" />
+            <Label fx:id="player4points" layoutX="300.0" layoutY="55.0" prefHeight="19.0" prefWidth="64.0" text="Player 4:" />
+            <Label fx:id="player5points" layoutX="390.0" layoutY="55.0" prefHeight="19.0" prefWidth="64.0" text="Player 5:" />
+            <Label fx:id="player7points" layoutX="120.0" layoutY="90.0" prefHeight="19.0" prefWidth="64.0" text="Player 7:" />
+            <Label fx:id="player8points" layoutX="210.0" layoutY="90.0" prefHeight="19.0" prefWidth="64.0" text="Player 8:" />
+            <Label fx:id="player9points" layoutX="300.0" layoutY="90.0" prefHeight="19.0" prefWidth="64.0" text="Player 9:" />
+            <Label fx:id="player10points" layoutX="390.0" layoutY="90.0" prefHeight="19.0" prefWidth="64.0" text="Player 10:" />
+            <Label alignment="CENTER" layoutX="199.0" layoutY="326.0" prefHeight="41.0" prefWidth="202.0">
                <font>
                   <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Label fx:id="answer3text" layoutX="188.0" layoutY="234.0" prefHeight="41.0" prefWidth="129.0" wrapText="true">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="answer2text" layoutX="371.0" layoutY="194.0" prefHeight="41.0" prefWidth="129.0" wrapText="true">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <Label fx:id="answer4text" layoutX="371.0" layoutY="234.0" prefHeight="41.0" prefWidth="129.0" wrapText="true">
+               <font>
+                  <Font size="13.0" />
                </font>
             </Label>
          </children>

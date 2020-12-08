@@ -18,30 +18,30 @@ import javafx.stage.Stage;
 
 public class ClientLobbyRoom extends Application implements Initializable{
 	
-	static Label[] playerLabels = new Label[10];
-	static Label[] playerLabelsS = new Label[10];
+	Text[] playerLabels = new Text[10];
+	static Text[] playerLabelsS = new Text[10];
 	static ArrayList<String> playerNames = new ArrayList<String>();
 	
 	@FXML
-	Label player1text;
+	Text player1text;
 	@FXML
-	Label player2text;
+	Text player2text;
 	@FXML
-	Label player3text;
+	Text player3text;
 	@FXML
-	Label player4text;
+	Text player4text;
 	@FXML
-	Label player5text;
+	Text player5text;
 	@FXML
-	Label player6text;
+	Text player6text;
 	@FXML
-	Label player7text;
+	Text player7text;
 	@FXML
-	Label player8text;
+	Text player8text;
 	@FXML
-	Label player9text;
+	Text player9text;
 	@FXML
-	Label player10text;
+	Text player10text;
 	
 	@FXML
 	Text leaderText;
@@ -57,6 +57,7 @@ public class ClientLobbyRoom extends Application implements Initializable{
 	Button leaveButton;
 	
 	public static boolean canStart = false;
+	public static int playerCount = 0;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -70,6 +71,8 @@ public class ClientLobbyRoom extends Application implements Initializable{
 		playerLabels[7] = player8text;
 		playerLabels[8] = player9text;
 		playerLabels[9] = player10text;
+		
+		ClientLobbyRoom.playerLabelsS = playerLabels;
 		
 		for(int i = 0; i < playerLabels.length; i++) {
 			playerLabels[i].setText("");
@@ -85,6 +88,7 @@ public class ClientLobbyRoom extends Application implements Initializable{
 		
 		roomCode.setText(roomCodeS);
 		setPlayerNames();
+		playerCount = 1;
 	}
 	
 	/*
@@ -92,7 +96,22 @@ public class ClientLobbyRoom extends Application implements Initializable{
 	 */
 	public static void setPlayerNamesS(String s) {
 		String[] tempNames = s.split(" ");
-		Collections.addAll(playerNames, tempNames);
+		while(!playerNames.isEmpty()) {
+			playerNames.remove(0);
+		}
+		Collections.addAll(reversePlayers(playerNames), tempNames);
+		System.out.println(playerNames);
+		setPlayerNames();
+		playerCount = playerNames.size();
+	}
+	
+	public static ArrayList<String> reversePlayers(ArrayList<String> list) {
+		for(int i = 0; i < list.size() / 2; i++) {
+			String temp = list.get(i);
+			list.set(i, list.get(list.size()-i-1));
+			list.set(list.size()-i-1, temp);
+		}
+		return list;
 	}
 	
 	/*
@@ -100,8 +119,16 @@ public class ClientLobbyRoom extends Application implements Initializable{
 	 */
 	public static void setPlayerNames() {
 		for(int i = 0; i < playerNames.size(); i++) {
-			playerLabels[i].setText(playerNames.get(i));
+			try {
+				playerLabelsS[i].setText(playerNames.get(i));
+			}catch(Exception e) {
+				//e.printStackTrace();
+			}
 		}
+	}
+	
+	public static ArrayList<String> getPlayerNames() {
+		return playerNames;
 	}
 	
 	/*
@@ -109,7 +136,7 @@ public class ClientLobbyRoom extends Application implements Initializable{
 	 */
 	public static void updatePlayerNames() {
 		for(int i = 0; i < playerNames.size(); i++) {
-			playerLabels[i].setText(playerNames.get(i));
+			playerLabelsS[i].setText(playerNames.get(i));
 		}
 	}
 	
@@ -125,6 +152,10 @@ public class ClientLobbyRoom extends Application implements Initializable{
 	 */
 	public static void setNotLeader() {
 		leaderTextS.setText("Only party leader can start!");
+	}
+	
+	public static void setNotEnough() {
+		leaderTextS.setText("Not enough players to start!");
 	}
 	
 	/*

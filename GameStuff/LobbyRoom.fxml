@@ -18,7 +18,6 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="player1text" layoutX="41.0" layoutY="60.0" prefHeight="25.0" prefWidth="111.0" text="Player 1" />
             <Button id="blue" fx:id="leaveButton" layoutX="35.0" layoutY="333.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="95.0" stylesheets="@stylesheet.css" text="Leave" />
             <Button id="blue" fx:id="startButton" layoutX="152.0" layoutY="333.0" mnemonicParsing="false" onAction="#buttonStart" prefHeight="41.0" prefWidth="121.0" stylesheets="@stylesheet.css" text="Start Game" />
             <TextField layoutX="367.0" layoutY="353.0" prefHeight="25.0" prefWidth="200.0" text="Send Message...." />
@@ -28,21 +27,22 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <Label fx:id="player2text" layoutX="41.0" layoutY="85.0" prefHeight="25.0" prefWidth="111.0" text="Player 2" />
-            <Label fx:id="player3text" layoutX="41.0" layoutY="110.0" prefHeight="25.0" prefWidth="111.0" text="Player 3" />
-            <Label fx:id="player4text" layoutX="41.0" layoutY="135.0" prefHeight="25.0" prefWidth="111.0" text="Player 4" />
-            <Label fx:id="player5text" layoutX="41.0" layoutY="160.0" prefHeight="25.0" prefWidth="111.0" text="Player 5" />
-            <Label fx:id="player6text" layoutX="41.0" layoutY="185.0" prefHeight="25.0" prefWidth="111.0" text="Player 6" />
-            <Label fx:id="player7text" layoutX="41.0" layoutY="210.0" prefHeight="25.0" prefWidth="111.0" text="Player 7" />
-            <Label fx:id="player8text" layoutX="41.0" layoutY="235.0" prefHeight="25.0" prefWidth="111.0" text="Player 8" />
-            <Label fx:id="player9text" layoutX="41.0" layoutY="260.0" prefHeight="25.0" prefWidth="111.0" text="Player 9" />
-            <Label fx:id="player10text" layoutX="41.0" layoutY="285.0" prefHeight="25.0" prefWidth="111.0" text="Player 10" />
             <Text fx:id="roomCode" layoutX="434.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room Code" textAlignment="CENTER" wrappingWidth="132.666015625">
                <font>
                   <Font name="System Bold" size="21.0" />
                </font></Text>
-            <Text fx:id="leaderText" layoutX="43.0" layoutY="383.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="306.0" />
+            <Text fx:id="leaderText" layoutX="60.0" layoutY="390.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="306.0" />
             <Text layoutX="449.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room Code" textAlignment="CENTER" underline="true" wrappingWidth="102.666015625" />
+            <Text fx:id="player1text" layoutX="41.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="111.0" />
+            <Text fx:id="player2text" layoutX="41.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="111.0" />
+            <Text fx:id="player3text" layoutX="41.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="111.0" />
+            <Text fx:id="player4text" layoutX="41.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="111.0" />
+            <Text fx:id="player5text" layoutX="41.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="111.0" />
+            <Text fx:id="player6text" layoutX="41.0" layoutY="159.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="111.0" />
+            <Text fx:id="player7text" layoutX="41.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="111.0" />
+            <Text fx:id="player8text" layoutX="41.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="111.0" />
+            <Text fx:id="player9text" layoutX="41.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="111.0" />
+            <Text fx:id="player10text" layoutX="41.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="111.0" />
          </children>
       </Pane>
    </children>

@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -63,7 +64,11 @@ public class GameClient extends Application implements Initializable {
 			@Override
 			public void handle(ActionEvent event) {
 				name = nameField.getText();
-				if(!name.equals("")) {
+				if(name.equals("")) {
+					nameErrorText.setText("Please enter a name.");
+				}else if(name.contains(" ")){
+					nameErrorText.setText("Name cannot contain spaces.");
+				}else {
 					host = "localhost";
 					port = 1234;
 					
@@ -76,8 +81,6 @@ public class GameClient extends Application implements Initializable {
 					}
 					
 					run();
-				}else {
-					nameErrorText.setText("Please enter a name.");
 				}
 			}
 		});
@@ -136,6 +139,10 @@ public class GameClient extends Application implements Initializable {
 	 */
 	public static void startGame() {
 		Write.sendStart();
+	}
+	
+	public static void sendAnswer(String answer) {
+		Write.sendAnswer(answer);
 	}
 	
 	public static void main(String[] args) throws IOException {
@@ -201,6 +208,23 @@ class Read extends Thread {
 				}else if(response.equals("*notleader")) {
 					//Informs the player that only the party leader can start the game
 					ClientLobbyRoom.setNotLeader();
+				}else if(response.equals("*notenoughplayers")) {
+					//Informs the player that there arent enough people to start
+					ClientLobbyRoom.setNotEnough();
+				}else if(response.substring(0,7).equals("*points")) {
+					ClientGameScreen.displayPoints(response.substring(7, response.length()));
+				}else if(response.substring(0,9).equals("*question")) {
+					ClientGameScreen.displayQuestion(response.substring(9, response.length()));
+				}else if(response.substring(0,8).equals("*answers")) {
+					ClientGameScreen.displayAnswers(response.substring(8, response.length()));
+				}else if(response.substring(0,8).equals("*message")) {
+					ClientGameScreen.displayMessage(response.substring(8, response.length()));
+				}else if(response.equals("*gotcorrect")) {
+					ClientGameScreen.setCorrect(true);
+				}else if(response.equals("*gotincorrect")) {
+					ClientGameScreen.setCorrect(false);
+				}else if(response.substring(0,8).equals("*winners")) {
+					ClientGameScreen.displayWinners(response.substring(8, response.length()));
 				}
 				//Debug
 				System.out.println(response);
@@ -262,5 +286,9 @@ class Write extends Thread {
 	
 	public static void sendStart() {
 		write.println("*startgame");
+	}
+	
+	public static void sendAnswer(String answer) {
+		write.println("*answer" + answer);
 	}
 }

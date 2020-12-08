@@ -25,7 +25,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Text fx:id="errorText" layoutX="119.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="360.13671875" />
+            <Text fx:id="errorText" layoutX="363.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="220.13671875" />
             <Text layoutX="242.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Logged in as" textAlignment="CENTER" wrappingWidth="112.79998779296875">
                <font>
                   <Font size="18.0" />

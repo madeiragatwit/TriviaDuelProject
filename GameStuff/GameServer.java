@@ -1,12 +1,18 @@
 import javax.xml.crypto.Data;
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class GameServer {
@@ -62,6 +68,10 @@ class User extends Thread{
     private Socket socket;
     public PrintWriter writer;
     public String name = "";
+    
+    public boolean hasWon = false;
+    public boolean hasAnswered = false;
+    public String answer = "";
 
     public User(Socket s) {
         this.socket = s;
@@ -112,22 +122,26 @@ class User extends Thread{
             }
             
             //Code to run once player is in a lobby
-            boolean started = false;
             while(true) {
             	String response = reader.readLine();
-            	if(!started) {
-            		//Will run until game is started ('started' is set to 'true')
             	if(response.equals("*startgame")) {
             		GameInstance game = getGame();
-            		if(game.isFirstPlayer(this)) {
+            		if(game.isFirstPlayer(this) && game.getCurrPlayers() > 1) {
             			getGame().startGame();
-            			started = true;
+            			continue;
+            		}else if(game.getCurrPlayers() < 2){
+            			//Informs the player that there arent enough people to start
+            			writer.println("*notenoughplayers");
             		}else {
             			//Informs player that only party leader can start game
             			writer.println("*notleader");
             		}
             	}
-            	}
+            	if(response.substring(0,7).equals("*answer")) {
+            			this.answer = response.substring(7, response.length());
+            			System.out.println(this.name + ": " + this.answer);
+            			this.hasAnswered = true;
+            		}
             }
 
         }catch(Exception e){
@@ -161,13 +175,13 @@ class User extends Thread{
  */
 class GameInstance extends Thread{
     private int gameCode;
-    private HashMap<User, Integer> players;
+    private LinkedHashMap<User, Integer> players;
     private boolean isStarted = false;
     
     public User firstPlayer;
 
     public GameInstance(User player, int gameCode){
-        this.players = new HashMap<User, Integer>();
+        this.players = new LinkedHashMap<User, Integer>();
         players.put(player, 0);
         firstPlayer = player;
         broadcastMessage("*players" + sendCurrentPlayers());
@@ -208,12 +222,23 @@ class GameInstance extends Thread{
      * Sends list of all players including the player itself.
      */
     String sendCurrentPlayers() {
+    	ArrayList<String> names = new ArrayList<String>();
     	String output = "";
     	Iterator it = players.entrySet().iterator();
     	while(it.hasNext()) {
     		Map.Entry<User, Integer> pair = (Map.Entry<User, Integer>)it.next();
-    		output += pair.getKey().name + " ";
-    		
+    		names.add(pair.getKey().name);
+    		//output += pair.getKey().name + " ";
+    	}
+    	
+    	for(int i = 0; i < names.size() / 2; i++) {
+			String temp = names.get(i);
+			names.set(i, names.get(names.size()-i-1));
+			names.set(names.size()-i-1, temp);
+		}
+    	
+    	for(int i = names.size()-1; i >= 0; i--) {
+    		output += names.get(i) + " ";
     	}
     	
     	return output;
@@ -271,21 +296,188 @@ class GameInstance extends Thread{
     public void startGame() {
     	broadcastMessage("*startgame");
     	isStarted = true;
+    	this.start();
     }
+    
+    
+    private static String streamToString(InputStream inputStream) {
+	    String text = new Scanner(inputStream, "UTF-8").useDelimiter("\\Z").next();
+	    return text;
+	  }
+	
+    /*
+     * Returns String representation of JSON file retrieved from URL
+     */
+	public static String jsonGetRequest(String urlQueryString) {
+	    String json = null;
+	    try {
+	      URL url = new URL(urlQueryString);
+	      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+	      connection.setDoOutput(true);
+	      connection.setInstanceFollowRedirects(false);
+	      connection.setRequestMethod("GET");
+	      connection.setRequestProperty("Content-Type", "application/json");
+	      connection.setRequestProperty("charset", "utf-8");
+	      connection.connect();
+	      InputStream inStream = connection.getInputStream();
+	      json = streamToString(inStream); // input stream to string
+	    } catch (IOException ex) {
+	      ex.printStackTrace();
+	    }
+	    return json;
+	  }
+	
+	public void displayPoints() {
+		int[] points = new int[players.size()];
+		int i = 0;
+		Iterator it = players.entrySet().iterator();
+    	while(it.hasNext()) {
+    		Map.Entry<User, Integer> pair = (Map.Entry<User, Integer>)it.next();
+    		points[i] = pair.getValue();
+    		i++;
+    	}
+    	
+    	String output = "";
+    	for(int j = 0; j < points.length; j++) {
+    		output += points[j] +  " ";
+    	}
+    	broadcastMessage("*points" + output);
+	}
+	
+	public boolean didAnybodyWin() {
+		Iterator it = players.entrySet().iterator();
+    	while(it.hasNext()) {
+    		Map.Entry<User, Integer> pair = (Map.Entry<User, Integer>)it.next();
+    		if(pair.getValue() == 10) {
+    			return true;
+    		}
+    	}
+    	return false;
+	}
+	
+	public String[] getTrivia(String json) {
+		String[] result = new String[6];
+		
+		int questionPositionStart = json.indexOf("QUESTION") + 11;
+		int questionPositionEnd = json.indexOf("ansA") - 3;
+		result[0] = json.substring(questionPositionStart, questionPositionEnd);
+		
+		int answer1PositionStart = json.indexOf("ansA") + 7;
+		int answer1PositionEnd = json.indexOf("ansB") - 3;
+		result[1] = json.substring(answer1PositionStart, answer1PositionEnd);
+		
+		int answer2PositionStart = json.indexOf("ansB") + 7;
+		int answer2PositionEnd = json.indexOf("ansC") - 3;
+		result[2] = json.substring(answer2PositionStart, answer2PositionEnd);
+		
+		int answer3PositionStart = json.indexOf("ansC") + 7;
+		int answer3PositionEnd = json.indexOf("ansD") - 3;
+		result[3] = json.substring(answer3PositionStart, answer3PositionEnd);
+		
+		int answer4PositionStart = json.indexOf("ansD") + 7;
+		int answer4PositionEnd = json.indexOf("created_at") - 3;
+		result[4] = json.substring(answer4PositionStart, answer4PositionEnd);
+		
+		int correctAnswerPositionStart = json.indexOf("correctAns") + 13;
+		int correctAnswerPositionEnd = json.indexOf("message") - 4;
+		result[5] = json.substring(correctAnswerPositionStart, correctAnswerPositionEnd);
+		
+		return result;
+	}
+	
+	public boolean hasEverybodyAnswered() {
+		Iterator it = players.entrySet().iterator();
+    	while(it.hasNext()) {
+    		System.out.print("");
+    		Map.Entry<User, Integer> pair = (Map.Entry<User, Integer>)it.next();
+    		if(!pair.getKey().hasAnswered) {
+    			return false;
+    		}
+    	}
+    	return true;
+	}
+	
+	public void calculatePoints(String correctAnswer) {
+		Iterator it = players.entrySet().iterator();
+    	while(it.hasNext()) {
+    		Map.Entry<User, Integer> pair = (Map.Entry<User, Integer>)it.next();
+    		if(pair.getKey().answer.equals(correctAnswer)) {
+    			//Increment points for correct answer
+    			int newValue = pair.getValue() + 1;
+    			pair.setValue(newValue);
+    			pair.getKey().writer.println("*gotcorrect");
+    		}else {
+    			pair.getKey().writer.println("*gotincorrect");
+    		}
+			//Reset answer & hasAnswered
+			pair.getKey().answer = "";
+			pair.getKey().hasAnswered = false;
+    	}
+	}
+	
+	public String getWinners() {
+		String output = "";
+		Iterator it = players.entrySet().iterator();
+    	while(it.hasNext()) {
+    		Map.Entry<User, Integer> pair = (Map.Entry<User, Integer>)it.next();
+    		if(pair.getValue() == 10) {
+    			output += pair.getKey().name + " ";
+    		}
+    	}
+    	return output;
+	}
+
     
     /*
      * Code for actual game once started
      */
-    public void run() {
+    public void run() {	
     	while(true) {
     		if(isStarted) {
+    			broadcastMessage("*messageReady to play?");
+    			displayPoints();
     			try {
-    				TimeUnit.MILLISECONDS.sleep(5);
+    				TimeUnit.SECONDS.sleep(3);
     			} catch (InterruptedException e1) {
     				e1.printStackTrace();
     			}
     			
+    			//Runs while game is still going; nobody has reached 5 points
+    			while(!didAnybodyWin()) {
+    				String newLine = jsonGetRequest("http://zenith.blue:8082/questions/rnd?k=298374982347");
+    				String[] trivia = getTrivia(newLine);
+    				
+    				String question = trivia[0];
+    				String answer1 = trivia[1];
+    				String answer2 = trivia[2];
+    				String answer3 = trivia[3];
+    				String answer4 = trivia[4];
+    				String correctAnswer = trivia[5];
+    				
+    				broadcastMessage("*question" + question);
+    				broadcastMessage("*answers" + answer1 + "]" + answer2 + "]" + answer3 + "]" + answer4);
+    				
+    				while(!hasEverybodyAnswered()) {
+    					//Waiting for players to answer
+    				}
+    				
+    				calculatePoints(correctAnswer);
+    				displayPoints();
+    				if(didAnybodyWin()) {
+    					broadcastMessage("*winners" + getWinners());
+    					isStarted = false;
+    				}
+    				
+    				try {
+    					TimeUnit.SECONDS.sleep(3);
+    				} catch (InterruptedException e1) {
+    					e1.printStackTrace();
+    				}
+    			}
     			
+    			/*
+    			 * Game code
+    			 */
     		}
     	}
     }
