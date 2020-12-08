@@ -1,3 +1,5 @@
+
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +14,7 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -23,6 +26,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class GameClient extends Application implements Initializable {
 	String host;
@@ -53,6 +57,13 @@ public class GameClient extends Application implements Initializable {
 		primaryStage.setScene(welcomeScene);
 		primaryStage.setTitle("Trivia Duel");
 		primaryStage.setResizable(false);
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent t) {
+				Platform.exit();
+				System.exit(0);
+			}
+		});
 		primaryStage.show();
 	}
 
@@ -70,7 +81,7 @@ public class GameClient extends Application implements Initializable {
 				}else if(name.contains(" ")){
 					nameErrorText.setText("Name cannot contain spaces.");
 				}else {
-					host = "localhost";
+					host = "zenith.blue";
 					port = 1234;
 					
 					FXMLLoader loader = new FXMLLoader(getClass().getResource("LobbyMenu.fxml"));
@@ -127,7 +138,7 @@ public class GameClient extends Application implements Initializable {
 	 */
 	public static void setRoomCode(String s) {
 		try {
-			TimeUnit.MILLISECONDS.sleep(5);
+			TimeUnit.SECONDS.sleep(1);
 		} catch (InterruptedException e1) {
 			e1.printStackTrace();
 		}
@@ -189,11 +200,6 @@ class Read extends Thread {
 					//Sets each player name text in the player's lobby menu
 					ClientLobbyRoom.setPlayerNamesS(response.substring(8, response.length()));
 				}else if(response.substring(0, 5).equals("*code")) {
-					try {
-						TimeUnit.MILLISECONDS.sleep(5);
-					} catch (InterruptedException e1) {
-						e1.printStackTrace();
-					}
 					
 					//Sets room code text for player's lobby menu
 					ClientLobbyRoom.setRoomCode(response.substring(5, 9));

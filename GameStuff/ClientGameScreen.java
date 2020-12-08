@@ -1,3 +1,4 @@
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -121,13 +122,15 @@ public class ClientGameScreen extends Application implements Initializable{
 	public static void displayQuestion(String question) {
 		Platform.runLater(new Runnable() {
 			@Override public void run() {
+				
 				questionTextS.setText(question);
 				
 				try {
-					TimeUnit.MILLISECONDS.sleep(50);
+					TimeUnit.MILLISECONDS.sleep(5);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
+				
 				canPress = true;
 			}
 		});

@@ -1,3 +1,4 @@
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -52,7 +53,7 @@ public class ClientLobbyMenu extends Application implements Initializable{
 			GameClient.sendJoinCode(code);
 			
 			try {
-				TimeUnit.MILLISECONDS.sleep(5);
+				TimeUnit.MILLISECONDS.sleep(300);
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
 			}

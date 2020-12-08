@@ -1,3 +1,4 @@
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -86,9 +87,16 @@ public class ClientLobbyRoom extends Application implements Initializable{
 			e1.printStackTrace();
 		}
 		
-		roomCode.setText(roomCodeS);
 		setPlayerNames();
 		playerCount = 1;
+		
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e1) {
+			e1.printStackTrace();
+		}
+		
+		roomCode.setText(roomCodeS);
 	}
 	
 	/*

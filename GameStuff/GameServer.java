@@ -1,4 +1,4 @@
-import javax.xml.crypto.Data;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -437,14 +437,14 @@ class GameInstance extends Thread{
     			broadcastMessage("*messageReady to play?");
     			displayPoints();
     			try {
-    				TimeUnit.SECONDS.sleep(3);
+    				TimeUnit.SECONDS.sleep(2);
     			} catch (InterruptedException e1) {
     				e1.printStackTrace();
     			}
     			
     			//Runs while game is still going; nobody has reached 5 points
     			while(!didAnybodyWin()) {
-    				String newLine = jsonGetRequest("http://zenith.blue:8082/questions/rnd?k=298374982347");
+    				String newLine = jsonGetRequest("http://zenith.blue:8082/questions/rnd?k=98327493298");
     				String[] trivia = getTrivia(newLine);
     				
     				String question = trivia[0];
@@ -453,6 +453,7 @@ class GameInstance extends Thread{
     				String answer3 = trivia[3];
     				String answer4 = trivia[4];
     				String correctAnswer = trivia[5];
+    				
     				
     				broadcastMessage("*question" + question);
     				broadcastMessage("*answers" + answer1 + "]" + answer2 + "]" + answer3 + "]" + answer4);
