@@ -18,8 +18,7 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Label>
-            <Button id="blue" fx:id="leaveButton" layoutX="35.0" layoutY="333.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="95.0" stylesheets="@stylesheet.css" text="Leave" />
-            <Button id="blue" fx:id="startButton" layoutX="152.0" layoutY="333.0" mnemonicParsing="false" onAction="#buttonStart" prefHeight="41.0" prefWidth="121.0" stylesheets="@stylesheet.css" text="Start Game" />
+            <Button id="blue" fx:id="startButton" layoutX="41.0" layoutY="333.0" mnemonicParsing="false" onAction="#buttonStart" prefHeight="41.0" prefWidth="200.0" stylesheets="@stylesheet.css" text="Start Game" />
             <TextField layoutX="367.0" layoutY="353.0" prefHeight="25.0" prefWidth="200.0" text="Send Message...." />
             <TextArea layoutX="367.0" layoutY="137.0" prefHeight="200.0" prefWidth="200.0" />
             <Label layoutX="367.0" layoutY="94.0" prefHeight="35.0" prefWidth="121.0" text="Chat:">
@@ -31,7 +30,7 @@
                <font>
                   <Font name="System Bold" size="21.0" />
                </font></Text>
-            <Text fx:id="leaderText" layoutX="60.0" layoutY="390.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="306.0" />
+            <Text fx:id="leaderText" layoutX="13.0" layoutY="390.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="279.0" />
             <Text layoutX="449.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Room Code" textAlignment="CENTER" underline="true" wrappingWidth="102.666015625" />
             <Text fx:id="player1text" layoutX="41.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="111.0" />
             <Text fx:id="player2text" layoutX="41.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="111.0" />

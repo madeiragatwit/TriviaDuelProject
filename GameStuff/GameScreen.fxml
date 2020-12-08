@@ -40,7 +40,6 @@
                   <Font name="Calibri" size="22.0" />
                </font>
             </Label>
-            <Button layoutX="41.0" layoutY="346.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="64.0" text="Leave" />
             <Label layoutX="30.0" layoutY="14.0" prefHeight="41.0" prefWidth="76.0" text="Points:">
                <font>
                   <Font name="System Bold" size="18.0" />
