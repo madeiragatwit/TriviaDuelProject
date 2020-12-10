@@ -288,12 +288,12 @@ public class ClientGameScreen extends Application implements Initializable{
 		String[] players = winners.split(" ");
 		String toDisplay = "";
 		if(players.length == 1) {
-			displayMessage(players[0] + " won!");
+			displayMessage(players[0] + " won! Restarting game...");
 		}else {
 			for(int i = 0; i < players.length-1; i++) {
 				toDisplay += players[i] + " and ";
 			}
-			toDisplay += players[players.length-1] + " won!";
+			toDisplay += players[players.length-1] + " won! Restarting game...";
 			displayMessage(toDisplay);
 		}
 	}

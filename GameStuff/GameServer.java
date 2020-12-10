@@ -415,6 +415,14 @@ class GameInstance extends Thread{
     	}
 	}
 	
+	public void resetPoints() {
+		Iterator it = players.entrySet().iterator();
+    	while(it.hasNext()) {
+    		Map.Entry<User, Integer> pair = (Map.Entry<User, Integer>)it.next();
+    		pair.setValue(0);
+    	}
+	}
+	
 	public String getWinners() {
 		String output = "";
 		Iterator it = players.entrySet().iterator();
@@ -434,7 +442,8 @@ class GameInstance extends Thread{
     public void run() {	
     	while(true) {
     		if(isStarted) {
-    			broadcastMessage("*messageReady to play?");
+    			broadcastMessage("*messageReady to play? First to 10 points wins!");
+    			resetPoints();
     			displayPoints();
     			try {
     				TimeUnit.SECONDS.sleep(2);
@@ -466,7 +475,11 @@ class GameInstance extends Thread{
     				displayPoints();
     				if(didAnybodyWin()) {
     					broadcastMessage("*winners" + getWinners());
-    					isStarted = false;
+    					try {
+        					TimeUnit.SECONDS.sleep(3);
+        				} catch (InterruptedException e1) {
+        					e1.printStackTrace();
+        				}
     				}
     				
     				try {

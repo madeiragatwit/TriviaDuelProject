@@ -81,7 +81,7 @@ public class GameClient extends Application implements Initializable {
 				}else if(name.contains(" ")){
 					nameErrorText.setText("Name cannot contain spaces.");
 				}else {
-					host = "zenith.blue";
+					host = "localhost";
 					port = 1234;
 					
 					FXMLLoader loader = new FXMLLoader(getClass().getResource("LobbyMenu.fxml"));
