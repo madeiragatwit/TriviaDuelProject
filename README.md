@@ -9,7 +9,7 @@ Trivia Duel is an online multiplayer game in which players correctly answer more
 
 ## Installation
 ### Download
-- Download the game here: https://drive.google.com/file/d/16E9CS8BKq6cTegZPmuFXT0ltBmC6YQ7V/view?usp=sharing
+- Download the game here: http://bit.ly/3mjL6mf
 ### Run
 - Unzip **TriviaDuel.zip**, and run **TriviaDuel.exe**
 ## Demo Video
