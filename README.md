@@ -14,6 +14,18 @@ Trivia Duel is an online multiplayer game in which players correctly answer more
 - Unzip **TriviaDuel.zip**, and run **TriviaDuel.exe**
 ## Demo Video
 (Insert video link)
+## Backend Information
+URL: http://zenith.blue:8082 // **ALL** requests must require a "k" field within the query. **The API key can be found within Dain Im's Project Team Evaluation Document.**
+Routes: 
+ - /questions/list
+ - /questions/rnd
+ - /questions/new -- **SHOULD NOT BE ACCESSED OUTSIDE OF VIEW**
+ - /questions/remove -- **SHOULD NOT BE ACCESSED OUTSIDE OF VIEW**
+ 
+ Views: 
+ - /
+ 
+ If you're trying to make your own version of this backend, you **must** use the .sql file within the folder to setup the MariaDB properly. Replace API keys within index.js, and /views/input.html, and lastly replace database information according to your DB within index.js. [Installation Guide](http://expressjs.com/en/starter/installing.html)
 ## Contributors
 - Chris D'Entremont - Frontend Developer
 - Gabriel Madeira - JavaFX Designer
