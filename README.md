@@ -16,6 +16,7 @@ Trivia Duel is an online multiplayer game in which players correctly answer more
 (Insert video link)
 ## Backend Information
 URL: http://zenith.blue:8082 // **ALL** requests must require a "k" field within the query. **The API key can be found within Dain Im's Project Team Evaluation Document.**
+
 Routes: 
  - /questions/list
  - /questions/rnd
