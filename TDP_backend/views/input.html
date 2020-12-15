@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WDS Admin Panel</title>
+</head>
+<body>
+ <h1>Easy Question Manager</h1>
+ <form action="/questions/new?k=(API_KEY)" method="POST">
+  <h2>Add a Question</h2>
+  <label>Question: </label>
+  <input type="text" name="question" placeholder="How tall is Mt. Everest?">
+  <br />
+  <br />
+  <label>Answer A: </label>
+  <input type="text" name="ansA" placeholder="8,848 meters">
+  <label>B: </label>
+  <input type="text" name="ansB" placeholder="2 meters">
+  <label>C: </label>
+  <input type="text" name="ansC" placeholder="3 meters">
+  <label>D: </label>
+  <input type="text" name="ansD" placeholder="4 meters">
+  <label>CORRECT ANSWER IS <b>ALWAYS</b> ANSWER A!!</label>
+  <br />
+  <br />
+  <button type="submit">Add</button>
+ </form>
+ <form action="/questions/remove?k=(API_KEY)" method="POST">
+   <h2>Remove a Question</h2>
+   <label>ID: </label>
+   <input type="text" name="id" placeholder="1">
+   <br />
+   <br />
+   <button type="submit">Remove</button>
+</body>
+</html>
