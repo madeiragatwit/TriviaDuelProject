@@ -9,7 +9,7 @@ Trivia Duel is an online multiplayer game in which players correctly answer more
 
 ## Installation
 ### Download
-- [Download the game here.](http://bit.ly/3mjL6mf)
+- [Download the game here.](https://drive.google.com/file/d/14Q7-iGnI1CgHdzD6mYbYxQhUGjpWvG85/view?usp=sharing)
 ### Run
 - Unzip **TriviaDuel.zip**, and run **TriviaDuel.exe**
 - You may encounter the error: **This application requires a Java Runtime Environment 1.8.0.** You can download this runtime [here.](https://www.oracle.com/java/technologies/javase-jre8-downloads.html)
