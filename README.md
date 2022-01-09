@@ -1,5 +1,5 @@
 # Trivia Duel
-## SERVER IS CURRENTLY OFFLINE. Game will not operate with online functionality.
+## SERVER IS CURRENTLY OFFLINE. Game will not operate with online functionality, please use YouTube link below to view application demonstration.
 ## Introduction
 Trivia Duel is an online multiplayer game in which players correctly answer more questions than each other.
 
