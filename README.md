@@ -14,7 +14,7 @@ Trivia Duel is an online multiplayer game in which players correctly answer more
 ### Run
 - Unzip **TriviaDuel.zip**, and run **TriviaDuel.exe**
 - You may encounter the error: **This application requires a Java Runtime Environment 1.8.0.** You can download this runtime [here.](https://www.oracle.com/java/technologies/javase-jre8-downloads.html)
-- 
+
 ## Demonstration w/ Screenshots
 The main menu where players can input their name and connect to server.
 
