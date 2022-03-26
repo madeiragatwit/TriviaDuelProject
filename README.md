@@ -17,17 +17,24 @@ Trivia Duel is an online multiplayer game in which players correctly answer more
 - 
 ## Demonstration w/ Screenshots
 The main menu where players can input their name and connect to server.
+
 ![main menu screenshot](mainmenu.jpg)
 
 Once a player is logged in, they can either create a new lobby or join an existing lobby with a code.
+
 ![logged in menu screenshot](loggedin.jpg)
 
+
 Once a player is in a lobby, a code is displayed that will allow other players to join the same lobby. Once all players are ready, the player who made the lobby can press the button to begin the game.
-![lobby 1 screenshot](lobby1.png)
-![lobby 2 screenshot](lobby2.png)
+
+![lobby 1 screenshot](lobby1.jpg)
+![lobby 2 screenshot](lobby2.jpg)
+
 
 Once the game is started, each players' score is kept track of at the top of the screen as the game progresses. The players are asked random questions and must choose their answers from the 4 provided.
+
 ![game screenshot](game.jpg)
+
 
 ## Contributors
 - Chris D'Entremont - Frontend Developer
