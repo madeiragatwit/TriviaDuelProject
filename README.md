@@ -1,7 +1,7 @@
 # Trivia Duel
 ## SERVER IS CURRENTLY OFFLINE. Game will not operate with online functionality, please view game functionality through screenshots below.
 ## Introduction
-Trivia Duel is an online multiplayer game in which players correctly answer more questions than each other.
+Trivia Duel is an online multiplayer game in which players correctly answer more questions than each other. We created this application to demonstrate the skills that we learned in our Network Programming course through socket programming.
 
 ## Game Features
 - Create individual game rooms and invite other players to join with a given **room code**.
