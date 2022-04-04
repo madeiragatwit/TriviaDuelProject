@@ -8,6 +8,12 @@ Trivia Duel is an online multiplayer game in which players correctly answer more
 - Once game is started by room leader (player to create room), answer questions and get points. (First player to 10 points wins game.)
 - If multiple players win the game (reach 10 points), all corresponding players' names will be presented in the winning result.
 
+## Skills Used
+- Java
+- JavaFX
+- Scene Builder
+- Socket Programming
+
 ## Installation
 ### Download
 - [Download the game here.](https://drive.google.com/file/d/14Q7-iGnI1CgHdzD6mYbYxQhUGjpWvG85/view?usp=sharing)
